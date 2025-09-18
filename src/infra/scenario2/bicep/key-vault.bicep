@@ -2,12 +2,6 @@ param keyVaultName string
 param location string
 param logAnalyticsWorkspaceName string
 param managedIdentityName string
-param functionAADServicePrincipalClientIdSecretName string
-@secure()
-param functionAADServicePrincipalClientId string
-param functionAADServicePrincipalClientSecretSecretName string
-@secure()
-param functionAADServicePrincipalClientSecret string
 param keyVaultPrivateEndpointName string
 param vNetName string
 param privateEndpointSubnetName string
@@ -58,22 +52,6 @@ module privateEndpoint 'private-endpoint.bicep' = {
   }
 }
 
-resource functionAADServicePrincipalClientIdSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
-  name: functionAADServicePrincipalClientIdSecretName
-  parent: keyVault
-  properties: {
-    value: functionAADServicePrincipalClientId
-  }
-}
-
-resource functionAADServicePrincipalClientSecretSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
-  name: functionAADServicePrincipalClientSecretSecretName
-  parent: keyVault
-  properties: {
-    value: functionAADServicePrincipalClientSecret
-  }
-}
-
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = {
   name: logAnalyticsWorkspaceName
 }
@@ -104,5 +82,3 @@ resource diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-pr
 
 output keyVaultName string = keyVault.name
 output keyVaultResourceId string = keyVault.id
-output functionAADServicePrincipalClientIdSecretName string = functionAADServicePrincipalClientIdSecretName
-output functionAADServicePrincipalClientSecretSecretName string = functionAADServicePrincipalClientSecretSecretName
